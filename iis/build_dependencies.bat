@@ -18,6 +18,8 @@
 @set APACHE_BIN32=httpd-2.4.6-win32-VC11.zip
 @set APACHE_BIN64=httpd-2.4.6-win64-VC11.zip
 @set YAJL=lloyd-yajl-f4b2b1a.zip
+@set SSDEEP=ssdeep-2.10.tar.gz
+@set SSDEEP_BIN=ssdeep-2.10.zip
 
 :: @set VCARGS32="C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\vcvars32.bat"
 :: @set VCARGS64="C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\vcvarsx86_amd64.bat"
@@ -79,6 +81,11 @@ echo "b"
 @if NOT (%ERRORLEVEL%) == (0) goto build_failed_yajl
 @cd "%CURRENT_DIR%"
 
+@echo # ssdeep - %SSDEEP%
+@call dependencies/build_ssdeep.bat
+@if NOT (%ERRORLEVEL%) == (0) goto build_failed_ssdeep
+@cd "%CURRENT_DIR%"
+
 @echo All dependencies were built successfully.
 @cd "%CURRENT_DIR%"
 @exit /B 0
@@ -117,6 +124,10 @@ echo "b"
 
 :build_failed_yajl
 @echo Failed to setup %YAJL%...
+@goto failed
+
+:build_failed_ssdeep
+@echo Failed to setup %SSDEEP%...
 @goto failed
 
 :failed
